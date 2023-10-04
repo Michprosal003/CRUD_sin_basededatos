@@ -1,0 +1,215 @@
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    namespace uip_crud_2023
+    {
+        public partial class Form1 : Form
+        {
+            public Form1()
+            {
+                InitializeComponent();
+            }
+
+            private void btnRegistrar_Click(object sender, EventArgs e)
+            {
+
+
+            //***********Codigo para guardar el registro***********//
+
+                string codigo, nombre, apellido, materia, nota, jornada, estado;
+
+                codigo = txtCodigo.Text;
+                nombre = txtNombre.Text;
+                apellido = txtApellido.Text;
+                materia = txtMateria.Text;
+                nota = txtNota.Text;
+                jornada = cmbJornada.Text;
+                estado = cmbEstado.Text;
+
+
+                Tabla.Rows.Add(codigo, nombre, apellido, materia, nota, jornada, estado);
+
+                MessageBox.Show("El Estudiante registrado correctamente");
+
+
+
+
+
+            }
+        // *********** Codigo para seleccionar una tabla ***************//
+            private void Tabla_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+            {
+
+
+                if (e.RowIndex >= 0 && e.RowIndex < Tabla.Rows.Count)
+                {
+
+                    DataGridViewRow filaseleccionada = Tabla.Rows[e.RowIndex];
+
+                    txtCodigo.Text = filaseleccionada.Cells[0].Value?.ToString();
+
+                    txtNombre.Text = filaseleccionada.Cells[1].Value?.ToString();
+
+                    txtApellido.Text = filaseleccionada.Cells[2].Value?.ToString();
+
+                    txtMateria.Text = filaseleccionada.Cells[3].Value?.ToString();
+
+                    txtNota.Text = filaseleccionada.Cells[4].Value?.ToString();
+
+                    cmbJornada.Text = filaseleccionada.Cells[5].Value?.ToString();
+
+                    cmbEstado.Text = filaseleccionada.Cells[6].Value?.ToString();
+
+
+
+
+
+
+
+
+                }
+
+
+
+
+            }
+
+
+        //********Codigo para modificar el registro existente de una tabla ***********//
+            private void btnModificar_Click(object sender, EventArgs e)
+            {
+
+
+                if (Tabla.SelectedRows.Count > 0)
+                {
+
+                    DataGridViewRow filaseleccionada = Tabla.SelectedRows[0];
+
+
+                    filaseleccionada.Cells[0].Value = txtCodigo.Text;
+                    filaseleccionada.Cells[1].Value = txtNombre.Text;
+                    filaseleccionada.Cells[2].Value = txtApellido.Text;
+                    filaseleccionada.Cells[3].Value = txtMateria.Text;
+                    filaseleccionada.Cells[4].Value = txtNota.Text;
+                    filaseleccionada.Cells[5].Value = cmbJornada.Text;
+                    filaseleccionada.Cells[6].Value = cmbEstado.Text;
+
+                    Tabla.Refresh();
+
+                    MessageBox.Show(" El Estudiante actualizado correctamente");
+
+
+
+
+
+                }
+
+
+
+
+
+            }
+
+
+        //************* Codigo para eliminar el registro de una tabla***********//
+            private void btnEliminar_Click(object sender, EventArgs e)
+            {
+
+
+                if (Tabla.SelectedRows.Count > 0)
+                {
+                    DataGridViewRow fila = Tabla.SelectedRows[0];
+                    Tabla.Rows.Remove(fila);
+                }
+
+
+                else
+                {
+                    MessageBox.Show("Debes seleccionar una fila antes de eliminar");
+                }
+
+
+            }
+
+
+        //**** Codigo para limpiar los nombres de una tabla *********//
+
+            private void btnNuevo_Click(object sender, EventArgs e)
+            {
+
+                txtCodigo.Text = "";
+                txtNombre.Text = "";
+                txtApellido.Text = "";
+                txtMateria.Text = "";
+                txtNota.Text = "";
+                cmbJornada.Text = "";
+                cmbEstado.Text = "";
+
+
+
+
+            }
+
+        //*************** Codigo para buscar el nombre del Estudiante ****//
+
+            private void btnBuscar_Click(object sender, EventArgs e)
+            {
+
+
+                string terminoBusqueda = txtBuscar.Text.ToLower();
+
+                if(!string.IsNullOrWhiteSpace(terminoBusqueda))
+                    {
+
+                    Tabla.ClearSelection();
+
+                    foreach (DataGridViewRow fila in Tabla.Rows)
+                    {
+
+
+                        bool encontrado = false;
+
+
+                        for (int i = 0; i < fila.Cells.Count; i++)
+                        {
+                            if (fila.Cells[i].Value != null && fila.Cells[i].Value.ToString().ToLower().Contains(terminoBusqueda))
+                            {
+                                encontrado = true;
+                                break;
+                            }
+                        }
+
+                        if (encontrado)
+                        {
+                            fila.Selected = true;
+
+                            break;
+                        }
+                    }
+                }
+
+
+
+
+                else
+                {
+                    MessageBox.Show("Ingresa un termino de busqueda valido.", "Busqueda Vacia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+           
